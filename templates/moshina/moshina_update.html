@@ -16,7 +16,7 @@
         }
 
         .form-container {
-            background-color: #94c577;
+            background-color: #8ea481;
             border-radius: 16px;
             padding: 40px;
             width: 100%;
@@ -49,7 +49,7 @@
         .form-container button {
             width: 100%;
             padding: 12px;
-            background-color: #4e54c8;
+            background-color: #505496;
             border: none;
             border-radius: 8px;
             color: white;
@@ -60,21 +60,14 @@
         }
 
         .form-container button:hover {
-            background-color: #3b40a4;
+            background-color: #64669e;
         }
     </style>
 </head>
 <body>
 <form class="form-container" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <h2>Moshina Ma'lumotlari</h2>
-    <input type="text" name="model_name" value="{{ moshina.model_name }}" placeholder="Moshina nomi">
-    <input type="text" name="model" value="{{ moshina.model }}" placeholder="Model">
-    <input type="text" name="color" value="{{ moshina.color }}" placeholder="Rangi">
-    <input type="number" name="price" value="{{ moshina.price }}" placeholder="Narxi ($)">
-    <input type="text" name="year" value="{{ moshina.year }}" placeholder="Yili">
-    <input type="text" name="description" value="{{ moshina.description }}" placeholder="Tavsif">
-    <input type="file" name="image">
+    {{ form.as_p }}
     <button type="submit">Yuklash</button>
 </form>
 </body>

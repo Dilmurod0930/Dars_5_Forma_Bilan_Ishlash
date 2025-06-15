@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect,  get_object_or_404
 from .models import Moshina
+from .forms import MoshinaForm
 
 """  model_name = models.CharField(max_length=100)  # Masalan: 'Gentra'
     model = models.CharField(max_length=100)  # Masalan: 'Chevrolet'
@@ -24,37 +25,58 @@ def  moshina_info(request , id):
     context = {'moshina': moshina}
     return render(request, 'moshina/moshina_info.html', context = context)
 
-def  moshina_update(request , id):
-    moshina = Moshina.objects.get(id = id)
-    if  request.method == 'POST':
-        moshina.model_name  = request.POST.get('model_name')
-        moshina.model = request.POST.get('model')
-        moshina.color = request.POST.get('color')
-        moshina.price = request.POST.get('price')
-        moshina.year = request.POST.get('year')
-        moshina.description = request.POST.get('description')
-        image = request.FILES.get('image')
-        if image:
-            moshina.image = image
-        moshina.save()
-        return redirect('moshina_info', id = id)
-    return render(request, 'moshina/moshina_update.html',  context={'moshina': 'moshina'})
 
 
+"""Yaratilgan  moshia  qo'shosh  uchun ishlatilgan. 
+ Creatd  Moshina  Funksiyasi"""
 
-def  moshina_add(request):
-    moshina = Moshina()
-    if  request.method == 'POST':
-        moshina.model_name = request.POST['model_name']
-        moshina.model = request.POST['model']
-        moshina.color = request.POST.get('color')
-        moshina.price = request.POST.get('price')
-        moshina.year = request.POST.get('year')
-        moshina.description = request.POST.get('description')
-        moshina.image = request.FILES.get('image')
-        moshina.save()
+# def  moshina_add(request):
+#     moshina = Moshina()
+#     if  request.method == 'POST':
+#         moshina.model_name = request.POST['model_name']
+#         moshina.model = request.POST['model']
+#         moshina.color = request.POST.get('color')
+#         moshina.price = request.POST.get('price')
+#         moshina.year = request.POST.get('year')
+#         moshina.description = request.POST.get('description')
+#         moshina.image = request.FILES.get('image')
+#         moshina.save()
+#         return redirect('moshina_lst')
+#     return render(request, "moshina/moshina_add.html", context={'moshina': moshina})
+
+def  moshina_add_form(request):
+    form = MoshinaForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
         return redirect('moshina_lst')
-    return render(request, "moshina/moshina_add.html", context={'moshina': moshina})
+    return render(request, 'moshina/moshina_add.html', {'form': form})
+
+"""==================================================================================================="""
+
+# def  moshina_update(request , id):
+#     moshina = Moshina.objects.get(id = id)
+#     if  request.method == 'POST':
+#         moshina.model_name  = request.POST.get('model_name')
+#         moshina.model = request.POST.get('model')
+#         moshina.color = request.POST.get('color')
+#         moshina.price = request.POST.get('price')
+#         moshina.year = request.POST.get('year')
+#         moshina.description = request.POST.get('description')
+#         image = request.FILES.get('image')
+#         if image:
+#             moshina.image = image
+#         moshina.save()
+#         return redirect('moshina_info', id = id)
+#     return render(request, 'moshina/moshina_update.html',  context={'moshina': 'moshina'})
+
+
+def  moshina_update_form(request, id):
+    moshina = Moshina.objects.get(id = id)
+    form = MoshinaForm(request.POST, request.FILES, instance = moshina)
+    if form.is_valid():
+        form.save()
+        return redirect('moshina_lst')
+    return render(request, 'moshina/moshina_update.html', {'form': form})
 
 
 def moshina_delete(request , id):
